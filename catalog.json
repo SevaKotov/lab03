@@ -1,0 +1,14 @@
+{
+    "format_version": 2,
+    "catalog": {
+        "6fbad285-dd14-4521-8b50-4f9e955070c3": {
+            "name": "Аудитория 301",
+            "category": "Лекционная",
+            "year": 2020,
+            "capacity": 120,
+            "equipment": "Проектор",
+            "id": "6fbad285-dd14-4521-8b50-4f9e955070c3",
+            "floor": "3"
+        }
+    }
+}
