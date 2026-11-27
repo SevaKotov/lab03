@@ -4,9 +4,6 @@ class CatalogError(Exception):
 class InvalidEntity(CatalogError):
     pass
 
-class DoubleID(CatalogError):
-    pass
-
 class UndefinedObject(CatalogError):
     pass
 
@@ -17,4 +14,7 @@ class CorruptedFile(CatalogError):
     pass
 
 class Invalid_Path(CatalogError):
+    pass
+
+class ReadOnlyError(Exception):
     pass

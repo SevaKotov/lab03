@@ -1,7 +1,7 @@
 import argparse
 from pathlib import Path
 
-from .errors import CatalogError
+from .errors import CatalogError, ReadOnlyError
 from .models import ClassData, Classroom
 from .storage import load_catalog, save_by_json, save_catalog
 
@@ -10,6 +10,7 @@ def create_parser():
     parser = argparse.ArgumentParser(
         description="Каталог учебных аудиторий"
     )
+    parser.add_argument("--admin", action="store_true", help="Режим администратора")
 
     commands = parser.add_subparsers(
         dest="command",
@@ -63,8 +64,13 @@ def main():
     try:
         catalog = ClassData()
         catalog = load_catalog(catalog)
-
+        if not args.admin:
+            view = True
+        else:
+            view = False
         if args.command == "add":
+            if view:
+                raise ReadOnlyError("You are not admin")
             room = Classroom(
                 name=args.name,
                 category=args.category,
@@ -84,6 +90,8 @@ def main():
             print(room)
 
         elif args.command == "remove":
+            if view:
+                raise ReadOnlyError("You are not admin")
             catalog.remove(args.item_id)
             save_catalog(catalog)
             print("Audience removed successfully")
@@ -100,7 +108,9 @@ def main():
                 print("Nothing found")
 
         elif args.command == "import":
-            save_by_json(Path(args.path), catalog)
+            if view:
+                raise ReadOnlyError("You are not admin")
+            save_by_json(Path(args.path), catalog, view)
             print("Catalog imported successfully")
 
         elif args.command == "count":

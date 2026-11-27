@@ -4,7 +4,7 @@ from uuid import uuid4
 
 from .errors import *
 
-FORMAT_VERSION = 2
+FORMAT_VERSION = 3
 VERSION_FIELDS = {
     1: {"name", "category", "year", "capacity", "equipment", "id"},
     2: {"name", "category", "year", "capacity", "equipment", "id", "floor"},
@@ -60,15 +60,13 @@ class Classroom:
         if not isinstance(d, dict):
             raise InvalidEntity("Incorrect room structure")
 
-        required_fields = {"id", "name", "category", "year", "capacity", "equipment"}
+        required_fields = {"name", "category", "year", "capacity", "equipment"}
         missing = required_fields - d.keys()
 
         if missing:
             raise InvalidEntity(f"Missing required fields: {missing}")
 
-        if (
-            not isinstance(d["id"], str)
-            or not isinstance(d["name"], str)
+        if (not isinstance(d["name"], str)
             or not isinstance(d["category"], str)
             or type(d["year"]) is not int
             or type(d["capacity"]) is not int
@@ -79,7 +77,6 @@ class Classroom:
         match version:
             case 1:
                 return cls(
-                    id=d["id"],
                     name=d["name"],
                     category=d["category"],
                     year=d["year"],
@@ -95,7 +92,6 @@ class Classroom:
                     raise InvalidEntity("Incorrect floor")
 
                 return cls(
-                    id=d["id"],
                     name=d["name"],
                     category=d["category"],
                     year=d["year"],
@@ -115,7 +111,6 @@ class Classroom:
                     raise InvalidEntity("Incorrect floor or building")
 
                 return cls(
-                    id=d["id"],
                     name=d["name"],
                     category=d["category"],
                     year=d["year"],
@@ -154,7 +149,7 @@ class ClassData:
         except KeyError as e:
             raise UndefinedObject(f"There is no item with id {item_id} in catalog") from e
 
-    def remove(self, item_id: str):
+    def remove(self, item_id: str) -> None:
         """Удаляет объект по его id"""
         try:
             del self._data["catalog"][item_id]

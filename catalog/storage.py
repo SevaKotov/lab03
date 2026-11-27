@@ -27,7 +27,7 @@ def json_parser(path: Path) -> dict:
         raise Invalid_Path(f"Can't open {path}: {e}") from e
 
 
-def save_by_json(path: Path, cat: ClassData) -> None:
+def save_by_json(path: Path, cat: ClassData, view) -> None:
     """Сохраняет данные в каталог полученные из json"""
     d = json_parser(path)
     try:
@@ -35,7 +35,7 @@ def save_by_json(path: Path, cat: ClassData) -> None:
         if type(version) is not int or version not in VERSION_FIELDS:
             raise UndefinedFormatVersion(f"Undefined format version: {version}")
         if not isinstance(d["catalog"], dict):
-            raise InvalidEntity("Irrcoret structure of file")
+            raise InvalidEntity("Ircoret structure of file")
     except KeyError as e:
         raise Invalid_Path(f"Invalid json: {path}") from e
     temp_catalog = ClassData()

@@ -1,14 +1,35 @@
 {
-    "format_version": 2,
+    "format_version": 3,
     "catalog": {
-        "6fbad285-dd14-4521-8b50-4f9e955070c3": {
+        "0ec988ec-564b-4f96-91d2-998dc308f82b": {
             "name": "Аудитория 301",
             "category": "Лекционная",
             "year": 2020,
             "capacity": 120,
-            "equipment": "Проектор",
-            "id": "6fbad285-dd14-4521-8b50-4f9e955070c3",
-            "floor": "3"
+            "equipment": "Проектор, компьютер",
+            "id": "0ec988ec-564b-4f96-91d2-998dc308f82b",
+            "floor": "3",
+            "building": "Главный корпус"
+        },
+        "3f19be56-bf01-458b-9c92-610ac04f57f8": {
+            "name": "Компьютерный класс 205",
+            "category": "Компьютерная",
+            "year": 2018,
+            "capacity": 30,
+            "equipment": "30 компьютеров",
+            "id": "3f19be56-bf01-458b-9c92-610ac04f57f8",
+            "floor": "2",
+            "building": "Корпус Б"
+        },
+        "df95ddc2-42b2-49d7-9a5e-c6a53cda37ef": {
+            "name": "Аудитория 110",
+            "category": "Семинарская",
+            "year": 2015,
+            "capacity": 25,
+            "equipment": null,
+            "id": "df95ddc2-42b2-49d7-9a5e-c6a53cda37ef",
+            "floor": null,
+            "building": null
         }
     }
 }
