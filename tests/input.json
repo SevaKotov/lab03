@@ -1,0 +1,35 @@
+{
+    "format_version": 3,
+    "catalog": {
+        "101": {
+            "id": "101",
+            "name": "Аудитория 301",
+            "category": "Лекционная",
+            "year": 2020,
+            "capacity": 120,
+            "equipment": "Проектор, компьютер",
+            "floor": "3",
+            "building": "Главный корпус"
+        },
+        "102": {
+            "id": "102",
+            "name": "Компьютерный класс 205",
+            "category": "Компьютерная",
+            "year": 2018,
+            "capacity": 30,
+            "equipment": "30 компьютеров",
+            "floor": "2",
+            "building": "Корпус Б"
+        },
+        "103": {
+            "id": "103",
+            "name": "Аудитория 110",
+            "category": "Семинарская",
+            "year": 2015,
+            "capacity": 25,
+            "equipment": null,
+            "floor": null,
+            "building": null
+        }
+    }
+}
