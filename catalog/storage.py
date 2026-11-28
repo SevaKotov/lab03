@@ -100,8 +100,7 @@ def load_catalog(cat: ClassData) -> ClassData:
         if not isinstance(value, dict):
             raise InvalidEntity("Incorrect room structure")
         room = Classroom.from_dict(value, version)
-        if key != room.id:
-            raise InvalidEntity(f"ID mismatch: {key} != {room.id}")
         temp_catalog.add(room)
     cat._data = temp_catalog._data
+    cat._category_index = temp_catalog._category_index
     return cat

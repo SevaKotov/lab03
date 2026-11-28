@@ -1,8 +1,8 @@
 
 import pytest
 
-from catalog.models import Classroom, ClassData
-from catalog.errors import InvalidEntity, UndefinedObject
+from catalog.errors import InvalidEntity
+from catalog.models import ClassData, Classroom
 
 
 def make_classroom(name="101", category="Лекционная", id=""):

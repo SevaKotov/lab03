@@ -124,6 +124,7 @@ class Classroom:
 class ClassData:
     def __init__(self):
         self._data = {"format_version": FORMAT_VERSION, "catalog": {}}
+        self._category_index = {}
 
     def add(self, item: Classroom) -> None:
         """Добавляет объект в каталог"""
@@ -141,6 +142,10 @@ class ClassData:
             )
             #Либо просто raise DoubleID(...)
         self._data["catalog"][item.id] = item
+        if item.category.lower() in self._category_index:
+            self._category_index[item.category.lower()].append(item.id)
+        else:
+            self._category_index[item.category.lower()] = [item.id]
 
     def get(self, item_id: str) -> Classroom:
         """Выводит объект по его id"""
@@ -152,19 +157,20 @@ class ClassData:
     def remove(self, item_id: str) -> None:
         """Удаляет объект по его id"""
         try:
-            del self._data["catalog"][item_id]
+            room = self._data["catalog"].pop(item_id)
         except KeyError as e:
             raise UndefinedObject(f"There is no element with id {item_id}") from e
 
+        category = room.category.lower()
+        self._category_index[category].remove(item_id)
+
+        if not self._category_index[category]:
+            del self._category_index[category]
+
     def find_by_category(self, category: str) -> list:
         """Ищет объекты с заданной категорией"""
-        category_data = []
-
-        for c in self._data["catalog"].values():
-            if c.category.lower() == category.lower():
-                category_data.append(c)
-
-        return category_data
+        ids = self._category_index.get(category.lower(), [])
+        return [self._data["catalog"][item_id] for item_id in ids]
 
     def find_by_name(self, query: str) -> list:
         """Ищет объект по имени"""

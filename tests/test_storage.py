@@ -1,10 +1,11 @@
 
 import json
+
 import pytest
 
-from catalog.models import Classroom, ClassData
-from catalog.storage import save_catalog, load_catalog
-from catalog.errors import CorruptedFile, UndefinedFormatVersion, InvalidEntity
+from catalog.errors import CorruptedFile, InvalidEntity, UndefinedFormatVersion
+from catalog.models import ClassData, Classroom
+from catalog.storage import load_catalog, save_catalog
 
 
 def test_json_round_trip(tmp_path, monkeypatch):
