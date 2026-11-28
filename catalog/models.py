@@ -52,7 +52,7 @@ class Classroom:
             raise InvalidEntity("Incorrect building")
 
     @classmethod
-    def from_dict(cls, d: dict, version: int):
+    def from_dict(cls, d: dict, version: int, preserve_id: bool = True):
         """Переводит словарь в объект classroom"""
         if type(version) is not int or version not in VERSION_FIELDS:
             raise UndefinedFormatVersion(f"Undefined format version {version}")
@@ -61,22 +61,31 @@ class Classroom:
             raise InvalidEntity("Incorrect room structure")
 
         required_fields = {"name", "category", "year", "capacity", "equipment"}
+
+        if preserve_id:
+            required_fields.add("id")
+
         missing = required_fields - d.keys()
 
         if missing:
             raise InvalidEntity(f"Missing required fields: {missing}")
 
-        if (not isinstance(d["name"], str)
-            or not isinstance(d["category"], str)
-            or type(d["year"]) is not int
-            or type(d["capacity"]) is not int
-            or (d["equipment"] is not None and not isinstance(d["equipment"], str))
+        if (
+                not isinstance(d["name"], str)
+                or not isinstance(d["category"], str)
+                or type(d["year"]) is not int
+                or type(d["capacity"]) is not int
+                or (d["equipment"] is not None and not isinstance(d["equipment"], str))
         ):
             raise InvalidEntity("Incorrect fields")
+
+        if preserve_id and not isinstance(d["id"], str):
+            raise InvalidEntity("Incorrect ID")
 
         match version:
             case 1:
                 return cls(
+                    id=d["id"] if preserve_id else "",
                     name=d["name"],
                     category=d["category"],
                     year=d["year"],
@@ -92,6 +101,7 @@ class Classroom:
                     raise InvalidEntity("Incorrect floor")
 
                 return cls(
+                    id=d["id"] if preserve_id else "",
                     name=d["name"],
                     category=d["category"],
                     year=d["year"],
@@ -105,12 +115,13 @@ class Classroom:
                     raise InvalidEntity("Not enough fields. No floor or building")
 
                 if (
-                    (d["floor"] is not None and not isinstance(d["floor"], str))
-                    or (d["building"] is not None and not isinstance(d["building"], str))
+                        (d["floor"] is not None and not isinstance(d["floor"], str))
+                        or (d["building"] is not None and not isinstance(d["building"], str))
                 ):
                     raise InvalidEntity("Incorrect floor or building")
 
                 return cls(
+                    id=d["id"] if preserve_id else "",
                     name=d["name"],
                     category=d["category"],
                     year=d["year"],
@@ -162,10 +173,12 @@ class ClassData:
             raise UndefinedObject(f"There is no element with id {item_id}") from e
 
         category = room.category.lower()
-        self._category_index[category].remove(item_id)
 
-        if not self._category_index[category]:
-            del self._category_index[category]
+        if category in self._category_index:
+            self._category_index[category].remove(item_id)
+
+            if not self._category_index[category]:
+                del self._category_index[category]
 
     def find_by_category(self, category: str) -> list:
         """Ищет объекты с заданной категорией"""

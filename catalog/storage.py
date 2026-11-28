@@ -46,7 +46,7 @@ def save_by_json(path: Path, cat: ClassData, view) -> None:
     for key, value in d["catalog"].items():
         if not isinstance(value, dict):
             raise InvalidEntity("Incorrect room structure")
-        room = Classroom.from_dict(value, version)
+        room = Classroom.from_dict(value, version, False)
         temp_catalog.add(room)
     catalog = {}
     for key, room in temp_catalog._data["catalog"].items():
